@@ -5,21 +5,22 @@ int main() {
     Block block("0", 0, "0", 0);
     container.addBlock(block);
 
+    int txCount = 10;
     string target = regex_replace("", block.getHeaderInfo().difficulty_target, "");
 
     std::mt19937 mt(std::random_device {}());
 
-    while(!block.getAllTransactions().empty()) {
+    do {
         cout << "Current number of unmined transactions: " << block.getAllTransactions().size() << endl << endl;
 
         vector<Transaction> tx;
         std::shuffle(block.getAllTransactions().begin(), block.getAllTransactions().end(), mt);
-        std::copy_n (block.getAllTransactions().begin(), 10, back_inserter (tx));
+        std::copy_n (block.getAllTransactions().begin(), txCount, back_inserter (tx));
         block.setTransactions(tx);
-        block.getAllTransactions().erase(block.getAllTransactions().begin(), block.getAllTransactions().begin() + 10);
+        block.getAllTransactions().erase(block.getAllTransactions().begin(), block.getAllTransactions().begin() + txCount);
 
         block.updateUserBalances();
-        
+
         vector<string> transactionHashes;
         for (const Transaction& transaction : block.getTransactions()) {
             string transactionHash = hasher(transaction.transactionId);
@@ -44,7 +45,7 @@ int main() {
                 block.getHeaderInfo().setPrevHash(finishedHash);
                 container.addBlock(block);
 
-                cout << block.getHeader() << " : " << block.getHeaderInfo().nonce << " <----- " << endl;
+                // cout << block.getHeader() << " : " << block.getHeaderInfo().nonce << " <----- " << endl;
                 cout << "--------------------------------------------------------------------" << endl;
                 cout << "Bloko hash'as: " << block.getHeader() << endl;
                 cout << "Nonce: " << block.getHeaderInfo().nonce << endl;
@@ -54,11 +55,13 @@ int main() {
                 block.getHeaderInfo().nonce = 0;
 
                 break;
-            } else { cout << block.getHeader() << " : " << block.getHeaderInfo().nonce << endl; }
+            } else { 
+                // cout << block.getHeader() << " : " << block.getHeaderInfo().nonce << endl; 
+            }
 
             block.getHeaderInfo().nonce++;
         }
-    }
+    } while(block.getAllTransactions().size() > txCount);
     container.printBlocks();
     block.printUsers();
 

@@ -3,8 +3,12 @@
 // Merkle medžio hash suradimas
 string calculateMerkleRoot(const vector<string>& transactionHashes) {
     vector<string> currentLayer = transactionHashes;
+
+    // Kol turime daugiau nei vieną hash'ą šiame lygyje
     while(currentLayer.size() > 1) {
         vector<string> newLayer;
+
+        // Einame per kiekvieną porą hash'ų šiame lygyje
         for(int i = 0; i < currentLayer.size(); i += 2) {
             string combinedHash = currentLayer[i] + currentLayer[i + 1];
             string newHash = hasher(combinedHash);
@@ -17,6 +21,8 @@ string calculateMerkleRoot(const vector<string>& transactionHashes) {
         }
         currentLayer = newLayer;
     }
+
+    // Galiausiai likęs hash'as yra Merkle šaknis
     return currentLayer[0];
 }
 

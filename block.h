@@ -108,13 +108,27 @@ public:
             string public_key = hasher(name);
             int balance = balanceIntr(mt);
             users.push_back(User(name, public_key, balance));
-        } for(int i = 0; i < txAmount; ++i) {
-            string transactionId = hasher(to_string(txIntr(mt)));
-            string sender = users[userIntr(mt)].public_key;
+        } 
+        
+        for(int i = 0; i < txAmount; ++i) {
+            int s = userIntr(mt);
+
+            string sender = users[s].public_key;
             string recipient = users[userIntr(mt)].public_key; 
             int amount = balanceIntr(mt);
-            allTransactions.push_back(Transaction(transactionId, sender, recipient, amount));
+            string transactionId = 
+                hasher(sender) +
+                hasher(recipient) +
+                hasher(to_string(amount));
+            string hashedInfo = hasher(transactionId);
+            transactionId = hashedInfo;
+
+            if(amount <= users[s].balance && transactionId == hashedInfo) {
+                allTransactions.push_back(Transaction(transactionId, sender, recipient, amount));
+                users[s].balance -= amount;
+            }
         }
+
     }
 
     BlockHeader& getHeaderInfo() {
@@ -149,6 +163,7 @@ public:
 
     // Funkcija išvedanti visus naudotojus
     void printUsers() {
+        cout << "--------------------------------------------------------------------" << endl;
         for (const User& user : users) {
             cout << user.name;
             cout << " { Balance: " << user.balance << "; public_key: " << user.public_key << " }" << endl; 
@@ -176,24 +191,22 @@ public:
             Block& block = blocks[i];
             BlockHeader& header = block.getHeaderInfo();
             
-            cout << "Block" << i << endl;
-            cout << "Previous Block Hash: " << header.prev_block_hash << endl;
-            cout << "Timestamp: " << header.timestamp << endl;
-            cout << "Version: " << header.version << endl;
-            cout << "Merkle Root Hash: " << header.merkle_root_hash << endl;
-            cout << "Nonce: " << header.nonce << endl;
+            cout << endl << "Block" << i << endl;
+            cout << left << setw(20) << "Previous Hash: " << header.prev_block_hash << endl;
+            cout << left << setw(20) << "Timestamp: " << header.timestamp << endl;
+            cout << left << setw(20) << "Version: " << header.version << endl;
+            cout << left << setw(20) << "Merkle Root Hash: " << header.merkle_root_hash << endl;
+            cout << left << setw(20) << "Nonce: " << header.nonce << endl;
+            cout << endl;
             
             const vector<Transaction>& transactions = block.getTransactions();
-
             cout << "Transaction amount: " << transactions.size() << endl;
             for (const Transaction& transaction : transactions) {
-                cout << "  Transaction ID: " << transaction.transactionId << endl;
-                cout << "  Sender: " << transaction.sender << endl;
-                cout << "  Recipient: " << transaction.recipient << endl;
-                cout << "  Amount: " << transaction.amount << endl;
+                cout << left << setw(20) << "  Transaction ID: " << transaction.transactionId << endl;
+                cout << left << setw(20) << "  Sender: " << transaction.sender << endl;
+                cout << left << setw(20) << "  Recipient: " << transaction.recipient << endl;
+                cout << left << setw(20) << "  Amount: " << transaction.amount << endl;
             }
-            
-            cout << "--------------------------------------------------------------------" << endl;
         }
     }
 
