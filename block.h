@@ -30,6 +30,7 @@ using std::bitset;
 using std::string;
 using std::hash;
 using std::cout;
+using std::stoi;
 using std::cin;
 using std::hex;
 using std::endl;
@@ -72,11 +73,9 @@ struct BlockHeader {
     string version;
     string merkle_root_hash;
     long nonce;
-    regex difficulty_target;
 
     BlockHeader(string prev_hash, long timestamp, string merkle_root_hash, long nonce) : prev_block_hash(prev_hash), timestamp(timestamp), merkle_root_hash(merkle_root_hash), nonce(nonce) {
         version = "00001";
-        difficulty_target = regex("^[0]{1,}+");
     }
 
     void setMerkle(const string& mr) {
@@ -85,6 +84,7 @@ struct BlockHeader {
     void setPrevHash(const string& ph) {
         prev_block_hash = ph;
     }
+    
 };
 
 class Block {
@@ -95,7 +95,7 @@ private:
     vector<Transaction> transactions, allTransactions;
 public:
     Block(string prev_hash, long timestamp, string merkle_root_hash, long nonce) : headerInfo(prev_hash, timestamp, merkle_root_hash, nonce) {
-        int usersAmount = 10, txAmount = 100;
+        int usersAmount = 1000, txAmount = usersAmount * 10;
 
         mt19937 mt(time(0));
         std::uniform_int_distribution<int> balanceIntr(100, 1000000);
@@ -149,15 +149,11 @@ public:
         transactions = tx;
     }
 
-    bool isTargetMet(const string& hash) {
-        return regex_search(hash, headerInfo.difficulty_target);
-    }
-
     // Funkcija atnaujinanti naudotojų balansus pagal atliktas transakcijas
     void updateUserBalances() {
-        for (const Transaction& transaction : transactions)
-            for (User& user : users)
-                if (user.public_key == transaction.recipient)
+        for(const Transaction& transaction : transactions)
+            for(User& user : users)
+                if(user.public_key == transaction.recipient)
                     user.balance += transaction.amount;
     }
 

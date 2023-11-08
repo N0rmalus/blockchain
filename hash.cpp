@@ -22,7 +22,7 @@ string calculateMerkleRoot(const vector<string>& transactionHashes) {
         currentLayer = newLayer;
     }
 
-    // Galiausiai likęs hash'as yra Merkle šaknis
+    // Likęs hash'as yra Merkle šaknis
     return currentLayer[0];
 }
 
