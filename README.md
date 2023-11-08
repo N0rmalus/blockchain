@@ -25,4 +25,4 @@
 
 ### Pastabos
 
-- Kadangi [mano](https://github.com/N0rmalus/hash-generator) sukurta hash funkcija buvo pakankamai lėta su difficulty_target trimis nuliais ir daugiau, naudojau kitą hash funkciją ([Lauritos](https://github.com/LauritaR/Blockchain2023))
+- Kadangi [mano](https://github.com/N0rmalus/hash-generator) sukurta hash funkcija buvo pakankamai lėta su difficulty_target trimis nuliais ir daugiau, naudojau kitą, neapsakomai efektyvę ir atsitiktinę, hash funkciją ([Lauritos](https://github.com/LauritaR/Blockchain2023))
