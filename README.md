@@ -2,7 +2,15 @@
 
 Ši programa simuliuoja blokų grandinės veikimą. Ji įgyvendina paprastą bloko, transakcijų ir naudotojų modelį, leidžiantį stebėti, kaip vyksta blokų kasyba ir transakcijų vykdymas.
 
-## v0.1 (naujausia)
+## v0.2 (naujausia)
+
+### Funkcionalumas
+
+- Pridėta transakcijų verifikacija, kuri patikrina:
+    - Ar naudotojas turi pakankamą balansą atlikti pervedimą (Jei turi, ta suma yra nuimama nuo balanso, jei neturi - pervedimas neįvykdomas)
+    - Ar tranksakcijos informacijos hash'as sutampa su transakcijos ID
+
+## v0.1
 
 ### Funkcionalumas
 
