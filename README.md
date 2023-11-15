@@ -9,6 +9,7 @@
 - Pridėta transakcijų verifikacija, kuri patikrina:
     - Ar naudotojas turi pakankamą balansą atlikti pervedimą (Jei turi, ta suma yra nuimama nuo balanso, jei neturi - pervedimas neįvykdomas)
     - Ar tranksakcijos informacijos hash'as sutampa su transakcijos ID
+- Pridėtas kasimo laiko matavimas, kuris tikrina, ar duotas laikas yra pakankamas blokui iškasti
 
 ## v0.1
 
